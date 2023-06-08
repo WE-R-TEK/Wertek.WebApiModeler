@@ -41,7 +41,6 @@ public class ControllerBase<TObject, TList, TEntity> : ControllerBase
     {
         IQueryable<TList> query = _dbContext.Set<TEntity>()
             .ProjectTo<TList>(_mapper.ConfigurationProvider);
-            //.Where("PrintableName = @0", "test");
 
         query = query.ToFilterView(filter);
         var entities = await query.ToListAsync();
@@ -56,6 +55,51 @@ public class ControllerBase<TObject, TList, TEntity> : ControllerBase
             Items = entities
         };
         return Ok(result);
+    }
+
+    [HttpPost("values-for/{field}")]
+    public virtual async Task<ActionResult<IEnumerable<object>>> ValuesFor(
+        [FromRoute] string field,
+        [FromBody] FilterValueFor filters)
+    {
+        var filterList = filters.Filters.ToList();
+        filterList.Add(new Filter
+        {
+            Clauses = new List<Clause>
+            {
+                new Clause
+                {
+                    Field = field,
+                    Operator = Operators.Contains,
+                    Value = filters.AutoComplete
+                }
+            },
+            Logic = Logic.And
+        });
+        filters.Filters = filterList;
+        var filter = new FilterDTO
+        {
+            Page = 0,
+            PageSize = 0,
+            Filters = filters.Filters,
+            Sort = new List<Sort>
+            {
+                new Sort
+                {
+                    Dir = filters.Direction,
+                    Field = field
+                }
+            }
+        };
+        IQueryable<TList> query = _dbContext.Set<TEntity>()
+            .ProjectTo<TList>(_mapper.ConfigurationProvider);
+
+        query = query.ToFilterView(filter);
+        var entities = await query
+            .Select(x => x.GetType().GetProperty(field)!.GetValue(x))
+            .ToListAsync();
+            
+        return Ok(entities.Distinct());
     }
 
     [HttpPost("export")]
