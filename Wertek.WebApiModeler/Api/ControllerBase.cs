@@ -56,7 +56,7 @@ public class ControllerBase<TObject, TList, TEntity> : ControllerBase
             PageSize = filter != null ? filter.PageSize : 0,
             TotalCount = count,
             TotalFiltered = totalFiltered,
-            TotalPages = filter != null ? count / filter.PageSize : 0,
+            TotalPages = filter != null ? totalFiltered / filter.PageSize : 0,
             Items = entities
         };
         return Ok(result);
