@@ -5,11 +5,13 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PackageId>Wertek.WebApiModeler</PackageId>
-    <Version>1.0.3</Version>
+    <Version>1.0.4</Version>
     <Authors>WE'R TEK</Authors>
     <Company>WE'R TEK</Company>
     <Description>A Easy way to modeler a web api using .NET 7 and EF 7</Description>
     <PackageTags>webapi, modeler, .net7, ef7</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,6 +19,7 @@
     <PackageReference Include="EPPlus" Version="6.2.4" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.5" />
+    <None Include="README.md" Pack="true" PackagePath=""/>
   </ItemGroup>
 
 </Project>
