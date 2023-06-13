@@ -46,6 +46,6 @@ jobs:
               uses: actions/setup-dotnet@v3
             - name: Publish NuGet package
               run: |
-                foreach ($file in (Get-ChildItem -Path ${{ github.workspace }} -Recursive -Include *.nupkg)) {
+                foreach ($file in (Get-ChildItem -Path ${{ github.workspace }} -Recurse -Include *.nupkg)) {
                     dotnet nuget push $file --api-key "${{ secrets.NUGET_APIKEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
                 }
