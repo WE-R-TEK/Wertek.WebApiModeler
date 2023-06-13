@@ -45,12 +45,17 @@ public class ControllerBase<TObject, TList, TEntity> : ControllerBase
         query = query.ToFilterView(filter);
         var entities = await query.ToListAsync();
         var count = await _dbContext.Set<TEntity>().CountAsync();
+
+        var totalFiltered = await _dbContext.Set<TEntity>()
+            .ProjectTo<TList>(_mapper.ConfigurationProvider)
+            .ToFilterView(new FilterDTO{Filters = filter != null ? filter.Filters: new List<Filter>()})
+            .CountAsync();
         var result = new PaginatedResult<TList>
         {
             Page = filter != null ? filter.Page : 0,
             PageSize = filter != null ? filter.PageSize : 0,
             TotalCount = count,
-            TotalFiltered = 0,
+            TotalFiltered = totalFiltered,
             TotalPages = filter != null ? count / filter.PageSize : 0,
             Items = entities
         };
@@ -96,7 +101,10 @@ public class ControllerBase<TObject, TList, TEntity> : ControllerBase
 
         query = query.ToFilterView(filter);
         var entities = await query
-            .Select(x => x.GetType().GetProperty(field)!.GetValue(x))
+            .Select(x => new {
+                Key = x.GetType().GetProperty(string.IsNullOrEmpty(filters.KeyField) ? field : filters.KeyField)!.GetValue(x),
+                Value = x.GetType().GetProperty(field)!.GetValue(x)
+            })
             .ToListAsync();
             
         return Ok(entities.Distinct());
