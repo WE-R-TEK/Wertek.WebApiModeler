@@ -60,19 +60,38 @@ public static class FilterBuilder
     {
         switch (Type.GetTypeCode(propertyType)) {
             case TypeCode.String:
+            case TypeCode.Object when propertyType == typeof(string):
                 return a => EF.Property<string>(a!, propertyName) == Convert.ToString(value);
             case TypeCode.Int32:
+            case TypeCode.Object when propertyType == typeof(int):
                 return a => EF.Property<int>(a!, propertyName) == Convert.ToInt32(value);
+            case TypeCode.Object when propertyType == typeof(int?):
+                return a => EF.Property<int?>(a!, propertyName) == Convert.ToInt32(value);
             case TypeCode.Int64:
+            case TypeCode.Object when propertyType == typeof(long):
                 return a => EF.Property<long>(a!, propertyName) == Convert.ToInt64(value);
+            case TypeCode.Object when propertyType == typeof(long?):
+                return a => EF.Property<long?>(a!, propertyName) == Convert.ToInt64(value);
             case TypeCode.Decimal:
+            case TypeCode.Object when propertyType == typeof(decimal):
                 return a => EF.Property<decimal>(a!, propertyName) == Convert.ToDecimal(value);
+            case TypeCode.Object when propertyType == typeof(decimal?):
+                return a => EF.Property<decimal?>(a!, propertyName) == Convert.ToDecimal(value);
             case TypeCode.Double:
+            case TypeCode.Object when propertyType == typeof(double):
                 return a => EF.Property<double>(a!, propertyName) == Convert.ToDouble(value);
+            case TypeCode.Object when propertyType == typeof(double?):
+                return a => EF.Property<double?>(a!, propertyName) == Convert.ToDouble(value);
             case TypeCode.Single:
+            case TypeCode.Object when propertyType == typeof(float):
                 return a => EF.Property<float>(a!, propertyName) == Convert.ToSingle(value);
+            case TypeCode.Object when propertyType == typeof(float?):
+                return a => EF.Property<float?>(a!, propertyName) == Convert.ToSingle(value);
             case TypeCode.DateTime:
+            case TypeCode.Object when propertyType == typeof(DateTime):
                 return a => EF.Property<DateTime>(a!, propertyName) == Convert.ToDateTime(value);
+            case TypeCode.Object when propertyType == typeof(DateTime?):
+                return a => EF.Property<DateTime?>(a!, propertyName) == Convert.ToDateTime(value);
             case TypeCode.Object when propertyType == typeof(DateTimeOffset):
                 return a => EF.Property<DateTimeOffset>(a!, propertyName) == Convert.ToDateTime(value);
             default:
@@ -85,19 +104,38 @@ public static class FilterBuilder
     {
         switch (Type.GetTypeCode(propertyType)) {
             case TypeCode.String:
+            case TypeCode.Object when propertyType == typeof(string):
                 return a => EF.Property<string>(a!, propertyName) != Convert.ToString(value);
             case TypeCode.Int32:
+            case TypeCode.Object when propertyType == typeof(int):
                 return a => EF.Property<int>(a!, propertyName) != Convert.ToInt32(value);
+            case TypeCode.Object when propertyType == typeof(int?):
+                return a => EF.Property<int?>(a!, propertyName) != Convert.ToInt32(value);
             case TypeCode.Int64:
+            case TypeCode.Object when propertyType == typeof(long):
                 return a => EF.Property<long>(a!, propertyName) != Convert.ToInt64(value);
+            case TypeCode.Object when propertyType == typeof(long?):
+                return a => EF.Property<long?>(a!, propertyName) != Convert.ToInt64(value);
             case TypeCode.Decimal:
+            case TypeCode.Object when propertyType == typeof(decimal):
                 return a => EF.Property<decimal>(a!, propertyName) != Convert.ToDecimal(value);
+            case TypeCode.Object when propertyType == typeof(decimal?):
+                return a => EF.Property<decimal?>(a!, propertyName) != Convert.ToDecimal(value);
             case TypeCode.Double:
+            case TypeCode.Object when propertyType == typeof(double):
                 return a => EF.Property<double>(a!, propertyName) != Convert.ToDouble(value);
+            case TypeCode.Object when propertyType == typeof(double?):
+                return a => EF.Property<double?>(a!, propertyName) != Convert.ToDouble(value);
             case TypeCode.Single:
+            case TypeCode.Object when propertyType == typeof(float):
                 return a => EF.Property<float>(a!, propertyName) != Convert.ToSingle(value);
+            case TypeCode.Object when propertyType == typeof(float?):
+                return a => EF.Property<float?>(a!, propertyName) != Convert.ToSingle(value);
             case TypeCode.DateTime:
+            case TypeCode.Object when propertyType == typeof(DateTime):
                 return a => EF.Property<DateTime>(a!, propertyName) != Convert.ToDateTime(value);
+            case TypeCode.Object when propertyType == typeof(DateTime?):
+                return a => EF.Property<DateTime?>(a!, propertyName) != Convert.ToDateTime(value);
             case TypeCode.Object when propertyType == typeof(DateTimeOffset):
                 return a => EF.Property<DateTimeOffset>(a!, propertyName) != Convert.ToDateTime(value);
             default:
@@ -110,17 +148,35 @@ public static class FilterBuilder
     {
         switch (Type.GetTypeCode(propertyType)) {
             case TypeCode.Int32:
+            case TypeCode.Object when propertyType == typeof(int):
                 return a => EF.Property<int>(a!, propertyName) > Convert.ToInt32(value);
+            case TypeCode.Object when propertyType == typeof(int?):
+                return a => EF.Property<int?>(a!, propertyName) > Convert.ToInt32(value);
             case TypeCode.Int64:
+            case TypeCode.Object when propertyType == typeof(long):
                 return a => EF.Property<long>(a!, propertyName) > Convert.ToInt64(value);
+            case TypeCode.Object when propertyType == typeof(long?):
+                return a => EF.Property<long?>(a!, propertyName) > Convert.ToInt64(value);
             case TypeCode.Decimal:
+            case TypeCode.Object when propertyType == typeof(decimal):
                 return a => EF.Property<decimal>(a!, propertyName) > Convert.ToDecimal(value);
+            case TypeCode.Object when propertyType == typeof(decimal?):
+                return a => EF.Property<decimal?>(a!, propertyName) > Convert.ToDecimal(value);
             case TypeCode.Double:
+            case TypeCode.Object when propertyType == typeof(double):
                 return a => EF.Property<double>(a!, propertyName) > Convert.ToDouble(value);
+            case TypeCode.Object when propertyType == typeof(double?):
+                return a => EF.Property<double?>(a!, propertyName) > Convert.ToDouble(value);
             case TypeCode.Single:
+            case TypeCode.Object when propertyType == typeof(float):
                 return a => EF.Property<float>(a!, propertyName) > Convert.ToSingle(value);
+            case TypeCode.Object when propertyType == typeof(float?):
+                return a => EF.Property<float?>(a!, propertyName) > Convert.ToSingle(value);
             case TypeCode.DateTime:
+            case TypeCode.Object when propertyType == typeof(DateTime):
                 return a => EF.Property<DateTime>(a!, propertyName) > Convert.ToDateTime(value);
+            case TypeCode.Object when propertyType == typeof(DateTime?):
+                return a => EF.Property<DateTime?>(a!, propertyName) > Convert.ToDateTime(value);
             case TypeCode.Object when propertyType == typeof(DateTimeOffset):
                 return a => EF.Property<DateTimeOffset>(a!, propertyName) > Convert.ToDateTime(value);
             default:
@@ -133,17 +189,35 @@ public static class FilterBuilder
     {
         switch (Type.GetTypeCode(propertyType)) {
             case TypeCode.Int32:
+            case TypeCode.Object when propertyType == typeof(int):
                 return a => EF.Property<int>(a!, propertyName) >= Convert.ToInt32(value);
+            case TypeCode.Object when propertyType == typeof(int?):
+                return a => EF.Property<int?>(a!, propertyName) >= Convert.ToInt32(value);
             case TypeCode.Int64:
+            case TypeCode.Object when propertyType == typeof(long):
                 return a => EF.Property<long>(a!, propertyName) >= Convert.ToInt64(value);
+            case TypeCode.Object when propertyType == typeof(long?):
+                return a => EF.Property<long?>(a!, propertyName) >= Convert.ToInt64(value);
             case TypeCode.Decimal:
+            case TypeCode.Object when propertyType == typeof(decimal):
                 return a => EF.Property<decimal>(a!, propertyName) >= Convert.ToDecimal(value);
+            case TypeCode.Object when propertyType == typeof(decimal?):
+                return a => EF.Property<decimal?>(a!, propertyName) >= Convert.ToDecimal(value);
             case TypeCode.Double:
+            case TypeCode.Object when propertyType == typeof(double):
                 return a => EF.Property<double>(a!, propertyName) >= Convert.ToDouble(value);
+            case TypeCode.Object when propertyType == typeof(double?):
+                return a => EF.Property<double?>(a!, propertyName) >= Convert.ToDouble(value);
             case TypeCode.Single:
+            case TypeCode.Object when propertyType == typeof(float):
                 return a => EF.Property<float>(a!, propertyName) >= Convert.ToSingle(value);
+            case TypeCode.Object when propertyType == typeof(float?):
+                return a => EF.Property<float?>(a!, propertyName) >= Convert.ToSingle(value);
             case TypeCode.DateTime:
+            case TypeCode.Object when propertyType == typeof(DateTime):
                 return a => EF.Property<DateTime>(a!, propertyName) >= Convert.ToDateTime(value);
+            case TypeCode.Object when propertyType == typeof(DateTime?):
+                return a => EF.Property<DateTime?>(a!, propertyName) >= Convert.ToDateTime(value);
             case TypeCode.Object when propertyType == typeof(DateTimeOffset):
                 return a => EF.Property<DateTimeOffset>(a!, propertyName) >= Convert.ToDateTime(value);
             default:
@@ -156,17 +230,35 @@ public static class FilterBuilder
     {
         switch (Type.GetTypeCode(propertyType)) {
             case TypeCode.Int32:
+            case TypeCode.Object when propertyType == typeof(int):
                 return a => EF.Property<int>(a!, propertyName) < Convert.ToInt32(value);
+            case TypeCode.Object when propertyType == typeof(int?):
+                return a => EF.Property<int?>(a!, propertyName) < Convert.ToInt32(value);
             case TypeCode.Int64:
+            case TypeCode.Object when propertyType == typeof(long):
                 return a => EF.Property<long>(a!, propertyName) < Convert.ToInt64(value);
+            case TypeCode.Object when propertyType == typeof(long?):
+                return a => EF.Property<long?>(a!, propertyName) < Convert.ToInt64(value);
             case TypeCode.Decimal:
+            case TypeCode.Object when propertyType == typeof(decimal):
                 return a => EF.Property<decimal>(a!, propertyName) < Convert.ToDecimal(value);
+            case TypeCode.Object when propertyType == typeof(decimal?):
+                return a => EF.Property<decimal?>(a!, propertyName) < Convert.ToDecimal(value);
             case TypeCode.Double:
+            case TypeCode.Object when propertyType == typeof(double):
                 return a => EF.Property<double>(a!, propertyName) < Convert.ToDouble(value);
+            case TypeCode.Object when propertyType == typeof(double?):
+                return a => EF.Property<double?>(a!, propertyName) < Convert.ToDouble(value);
             case TypeCode.Single:
+            case TypeCode.Object when propertyType == typeof(float):
                 return a => EF.Property<float>(a!, propertyName) < Convert.ToSingle(value);
+            case TypeCode.Object when propertyType == typeof(float?):
+                return a => EF.Property<float?>(a!, propertyName) < Convert.ToSingle(value);
             case TypeCode.DateTime:
+            case TypeCode.Object when propertyType == typeof(DateTime):
                 return a => EF.Property<DateTime>(a!, propertyName) < Convert.ToDateTime(value);
+            case TypeCode.Object when propertyType == typeof(DateTime?):
+                return a => EF.Property<DateTime?>(a!, propertyName) < Convert.ToDateTime(value);
             case TypeCode.Object when propertyType == typeof(DateTimeOffset):
                 return a => EF.Property<DateTimeOffset>(a!, propertyName) < Convert.ToDateTime(value);
             default:
@@ -179,17 +271,35 @@ public static class FilterBuilder
     {
         switch (Type.GetTypeCode(propertyType)) {
             case TypeCode.Int32:
+            case TypeCode.Object when propertyType == typeof(int):
                 return a => EF.Property<int>(a!, propertyName) <= Convert.ToInt32(value);
+            case TypeCode.Object when propertyType == typeof(int?):
+                return a => EF.Property<int?>(a!, propertyName) <= Convert.ToInt32(value);
             case TypeCode.Int64:
+            case TypeCode.Object when propertyType == typeof(long):
                 return a => EF.Property<long>(a!, propertyName) <= Convert.ToInt64(value);
+            case TypeCode.Object when propertyType == typeof(long?):
+                return a => EF.Property<long?>(a!, propertyName) <= Convert.ToInt64(value);
             case TypeCode.Decimal:
+            case TypeCode.Object when propertyType == typeof(decimal):
                 return a => EF.Property<decimal>(a!, propertyName) <= Convert.ToDecimal(value);
+            case TypeCode.Object when propertyType == typeof(decimal?):
+                return a => EF.Property<decimal?>(a!, propertyName) <= Convert.ToDecimal(value);
             case TypeCode.Double:
+            case TypeCode.Object when propertyType == typeof(double):
                 return a => EF.Property<double>(a!, propertyName) <= Convert.ToDouble(value);
+            case TypeCode.Object when propertyType == typeof(double?):
+                return a => EF.Property<double?>(a!, propertyName) <= Convert.ToDouble(value);
             case TypeCode.Single:
+            case TypeCode.Object when propertyType == typeof(float):
                 return a => EF.Property<float>(a!, propertyName) <= Convert.ToSingle(value);
+            case TypeCode.Object when propertyType == typeof(float?):
+                return a => EF.Property<float?>(a!, propertyName) <= Convert.ToSingle(value);
             case TypeCode.DateTime:
+            case TypeCode.Object when propertyType == typeof(DateTime):
                 return a => EF.Property<DateTime>(a!, propertyName) <= Convert.ToDateTime(value);
+            case TypeCode.Object when propertyType == typeof(DateTime?):
+                return a => EF.Property<DateTime?>(a!, propertyName) <= Convert.ToDateTime(value);
             case TypeCode.Object when propertyType == typeof(DateTimeOffset):
                 return a => EF.Property<DateTimeOffset>(a!, propertyName) <= Convert.ToDateTime(value);
             default:
@@ -202,6 +312,7 @@ public static class FilterBuilder
     {
         switch (Type.GetTypeCode(propertyType)) {
             case TypeCode.String:
+            case TypeCode.Object when propertyType == typeof(string):
                 return a => EF.Property<string>(a!, propertyName).Contains(Convert.ToString(value) ?? "");
             default:
                 return null;
@@ -213,6 +324,7 @@ public static class FilterBuilder
     {
         switch (Type.GetTypeCode(propertyType)) {
             case TypeCode.String:
+            case TypeCode.Object when propertyType == typeof(string):
                 return a => EF.Property<string>(a!, propertyName).StartsWith(Convert.ToString(value) ?? "");
             default:
                 return null;
@@ -224,6 +336,7 @@ public static class FilterBuilder
     {
         switch (Type.GetTypeCode(propertyType)) {
             case TypeCode.String:
+            case TypeCode.Object when propertyType == typeof(string):
                 return a => EF.Property<string>(a!, propertyName).EndsWith(Convert.ToString(value) ?? "");
             default:
                 return null;
@@ -233,20 +346,40 @@ public static class FilterBuilder
 
     private static Expression<Func<T, bool>>? GetInQuery<T>(string propertyName, object value, Type propertyType)
     {
+        if(string.IsNullOrEmpty(value.ToString()))
+            return null;
         var values = (value.ToString() ?? "").Split(',');
         switch (Type.GetTypeCode(propertyType)) {
             case TypeCode.Int32:
+            case TypeCode.Object when propertyType == typeof(int):
                 return a => values.Contains(EF.Property<int>(a!, propertyName).ToString());
+            case TypeCode.Object when propertyType == typeof(int?):
+                return a => values.Contains(EF.Property<int?>(a!, propertyName).ToString());
             case TypeCode.Int64:
+            case TypeCode.Object when propertyType == typeof(long):
                 return a => values.Contains(EF.Property<long>(a!, propertyName).ToString());
+            case TypeCode.Object when propertyType == typeof(long?):
+                return a => values.Contains(EF.Property<long?>(a!, propertyName).ToString());
             case TypeCode.Decimal:
+            case TypeCode.Object when propertyType == typeof(decimal):
                 return a => values.Contains(EF.Property<decimal>(a!, propertyName).ToString());
+            case TypeCode.Object when propertyType == typeof(decimal?):
+                return a => values.Contains(EF.Property<decimal?>(a!, propertyName).ToString());
             case TypeCode.Double:
+            case TypeCode.Object when propertyType == typeof(double):
                 return a => values.Contains(EF.Property<double>(a!, propertyName).ToString());
+            case TypeCode.Object when propertyType == typeof(double?):
+                return a => values.Contains(EF.Property<double?>(a!, propertyName).ToString());
             case TypeCode.Single:
+            case TypeCode.Object when propertyType == typeof(float):
                 return a => values.Contains(EF.Property<float>(a!, propertyName).ToString());
+            case TypeCode.Object when propertyType == typeof(float?):
+                return a => values.Contains(EF.Property<float?>(a!, propertyName).ToString());
             case TypeCode.DateTime:
+            case TypeCode.Object when propertyType == typeof(DateTime):
                 return a => values.Contains(EF.Property<DateTime>(a!, propertyName).ToString());
+            case TypeCode.Object when propertyType == typeof(DateTime?):
+                return a => values.Contains(EF.Property<DateTime?>(a!, propertyName).ToString());
             case TypeCode.Object when propertyType == typeof(DateTimeOffset):
                 return a => values.Contains(EF.Property<DateTimeOffset>(a!, propertyName).ToString());
             default:
@@ -256,20 +389,40 @@ public static class FilterBuilder
     }
     private static Expression<Func<T, bool>>? GetNotInQuery<T>(string propertyName, object value, Type propertyType)
     {
+        if(string.IsNullOrEmpty(value.ToString()))
+            return null;
         var values = (value.ToString() ?? "").Split(',');
         switch (Type.GetTypeCode(propertyType)) {
             case TypeCode.Int32:
+            case TypeCode.Object when propertyType == typeof(int):
                 return a => !values.Contains(EF.Property<int>(a!, propertyName).ToString());
+            case TypeCode.Object when propertyType == typeof(int?):
+                return a => !values.Contains(EF.Property<int?>(a!, propertyName).ToString());
             case TypeCode.Int64:
+            case TypeCode.Object when propertyType == typeof(long):
                 return a => !values.Contains(EF.Property<long>(a!, propertyName).ToString());
+            case TypeCode.Object when propertyType == typeof(long?):
+                return a => !values.Contains(EF.Property<long?>(a!, propertyName).ToString());
             case TypeCode.Decimal:
+            case TypeCode.Object when propertyType == typeof(decimal):
                 return a => !values.Contains(EF.Property<decimal>(a!, propertyName).ToString());
+            case TypeCode.Object when propertyType == typeof(decimal?):
+                return a => !values.Contains(EF.Property<decimal?>(a!, propertyName).ToString());
             case TypeCode.Double:
+            case TypeCode.Object when propertyType == typeof(double):
                 return a => !values.Contains(EF.Property<double>(a!, propertyName).ToString());
+            case TypeCode.Object when propertyType == typeof(double?):
+                return a => !values.Contains(EF.Property<double?>(a!, propertyName).ToString());
             case TypeCode.Single:
+            case TypeCode.Object when propertyType == typeof(float):
                 return a => !values.Contains(EF.Property<float>(a!, propertyName).ToString());
+            case TypeCode.Object when propertyType == typeof(float?):
+                return a => !values.Contains(EF.Property<float?>(a!, propertyName).ToString());
             case TypeCode.DateTime:
+            case TypeCode.Object when propertyType == typeof(DateTime):
                 return a => !values.Contains(EF.Property<DateTime>(a!, propertyName).ToString());
+            case TypeCode.Object when propertyType == typeof(DateTime?):
+                return a => !values.Contains(EF.Property<DateTime?>(a!, propertyName).ToString());
             case TypeCode.Object when propertyType == typeof(DateTimeOffset):
                 return a => !values.Contains(EF.Property<DateTimeOffset>(a!, propertyName).ToString());
             default:
@@ -280,20 +433,40 @@ public static class FilterBuilder
 
     private static Expression<Func<T, bool>>? GetBetweenQuery<T>(string propertyName, object value, Type propertyType)
     {
+        if(string.IsNullOrEmpty(value.ToString()))
+            return null;
         var values = (value.ToString() ?? "").Split(',');
         switch (Type.GetTypeCode(propertyType)) {
             case TypeCode.Int32:
+            case TypeCode.Object when propertyType == typeof(int):
                 return a => EF.Property<int>(a!, propertyName) >= Convert.ToInt32(values[0]) && EF.Property<int>(a!, propertyName) <= Convert.ToInt32(values[1]);
+            case TypeCode.Object when propertyType == typeof(int?):
+                return a => EF.Property<int?>(a!, propertyName) >= Convert.ToInt32(values[0]) && EF.Property<int?>(a!, propertyName) <= Convert.ToInt32(values[1]);
             case TypeCode.Int64:
+            case TypeCode.Object when propertyType == typeof(long):
                 return a => EF.Property<long>(a!, propertyName) >= Convert.ToInt64(values[0]) && EF.Property<long>(a!, propertyName) <= Convert.ToInt64(values[1]);
+            case TypeCode.Object when propertyType == typeof(long?):
+                return a => EF.Property<long?>(a!, propertyName) >= Convert.ToInt64(values[0]) && EF.Property<long?>(a!, propertyName) <= Convert.ToInt64(values[1]);
             case TypeCode.Decimal:
+            case TypeCode.Object when propertyType == typeof(decimal):
                 return a => EF.Property<decimal>(a!, propertyName) >= Convert.ToDecimal(values[0]) && EF.Property<decimal>(a!, propertyName) <= Convert.ToDecimal(values[1]);
+            case TypeCode.Object when propertyType == typeof(decimal?):
+                return a => EF.Property<decimal?>(a!, propertyName) >= Convert.ToDecimal(values[0]) && EF.Property<decimal?>(a!, propertyName) <= Convert.ToDecimal(values[1]);
             case TypeCode.Double:
+            case TypeCode.Object when propertyType == typeof(double):
                 return a => EF.Property<double>(a!, propertyName) >= Convert.ToDouble(values[0]) && EF.Property<double>(a!, propertyName) <= Convert.ToDouble(values[1]);
+            case TypeCode.Object when propertyType == typeof(double?):
+                return a => EF.Property<double?>(a!, propertyName) >= Convert.ToDouble(values[0]) && EF.Property<double?>(a!, propertyName) <= Convert.ToDouble(values[1]);
             case TypeCode.Single:
+            case TypeCode.Object when propertyType == typeof(float):
                 return a => EF.Property<float>(a!, propertyName) >= Convert.ToSingle(values[0]) && EF.Property<float>(a!, propertyName) <= Convert.ToSingle(values[1]);
+            case TypeCode.Object when propertyType == typeof(float?):
+                return a => EF.Property<float?>(a!, propertyName) >= Convert.ToSingle(values[0]) && EF.Property<float?>(a!, propertyName) <= Convert.ToSingle(values[1]);
             case TypeCode.DateTime:
+            case TypeCode.Object when propertyType == typeof(DateTime):
                 return a => EF.Property<DateTime>(a!, propertyName) >= Convert.ToDateTime(values[0]) && EF.Property<DateTime>(a!, propertyName) <= Convert.ToDateTime(values[1]);
+            case TypeCode.Object when propertyType == typeof(DateTime?):
+                return a => EF.Property<DateTime?>(a!, propertyName) >= Convert.ToDateTime(values[0]) && EF.Property<DateTime?>(a!, propertyName) <= Convert.ToDateTime(values[1]);
             case TypeCode.Object when propertyType == typeof(DateTimeOffset):
                 return a => EF.Property<DateTimeOffset>(a!, propertyName) >= Convert.ToDateTime(values[0]) && EF.Property<DateTimeOffset>(a!, propertyName) <= Convert.ToDateTime(values[1]);
             default:
@@ -304,20 +477,40 @@ public static class FilterBuilder
 
     private static Expression<Func<T, bool>>? GetNotBetweenQuery<T>(string propertyName, object value, Type propertyType)
     {
+        if(string.IsNullOrEmpty(value.ToString()))
+            return null;
         var values = (value.ToString() ?? "").Split(',');
         switch (Type.GetTypeCode(propertyType)) {
             case TypeCode.Int32:
+            case TypeCode.Object when propertyType == typeof(int):
                 return a => EF.Property<int>(a!, propertyName) < Convert.ToInt32(values[0]) || EF.Property<int>(a!, propertyName) > Convert.ToInt32(values[1]);
+            case TypeCode.Object when propertyType == typeof(int?):
+                return a => EF.Property<int?>(a!, propertyName) < Convert.ToInt32(values[0]) || EF.Property<int?>(a!, propertyName) > Convert.ToInt32(values[1]);
             case TypeCode.Int64:
+            case TypeCode.Object when propertyType == typeof(long):
                 return a => EF.Property<long>(a!, propertyName) < Convert.ToInt64(values[0]) || EF.Property<long>(a!, propertyName) > Convert.ToInt64(values[1]);
+            case TypeCode.Object when propertyType == typeof(long?):
+                return a => EF.Property<long?>(a!, propertyName) < Convert.ToInt64(values[0]) || EF.Property<long?>(a!, propertyName) > Convert.ToInt64(values[1]);
             case TypeCode.Decimal:
+            case TypeCode.Object when propertyType == typeof(decimal):
                 return a => EF.Property<decimal>(a!, propertyName) < Convert.ToDecimal(values[0]) || EF.Property<decimal>(a!, propertyName) > Convert.ToDecimal(values[1]);
+            case TypeCode.Object when propertyType == typeof(decimal?):
+                return a => EF.Property<decimal?>(a!, propertyName) < Convert.ToDecimal(values[0]) || EF.Property<decimal?>(a!, propertyName) > Convert.ToDecimal(values[1]);
             case TypeCode.Double:
+            case TypeCode.Object when propertyType == typeof(double):
                 return a => EF.Property<double>(a!, propertyName) < Convert.ToDouble(values[0]) || EF.Property<double>(a!, propertyName) > Convert.ToDouble(values[1]);
+            case TypeCode.Object when propertyType == typeof(double?):
+                return a => EF.Property<double?>(a!, propertyName) < Convert.ToDouble(values[0]) || EF.Property<double?>(a!, propertyName) > Convert.ToDouble(values[1]);
             case TypeCode.Single:
+            case TypeCode.Object when propertyType == typeof(float):
                 return a => EF.Property<float>(a!, propertyName) < Convert.ToSingle(values[0]) || EF.Property<float>(a!, propertyName) > Convert.ToSingle(values[1]);
+            case TypeCode.Object when propertyType == typeof(float?):
+                return a => EF.Property<float?>(a!, propertyName) < Convert.ToSingle(values[0]) || EF.Property<float?>(a!, propertyName) > Convert.ToSingle(values[1]);
             case TypeCode.DateTime:
+            case TypeCode.Object when propertyType == typeof(DateTime):
                 return a => EF.Property<DateTime>(a!, propertyName) < Convert.ToDateTime(values[0]) || EF.Property<DateTime>(a!, propertyName) > Convert.ToDateTime(values[1]);
+            case TypeCode.Object when propertyType == typeof(DateTime?):
+                return a => EF.Property<DateTime?>(a!, propertyName) < Convert.ToDateTime(values[0]) || EF.Property<DateTime?>(a!, propertyName) > Convert.ToDateTime(values[1]);
             case TypeCode.Object when propertyType == typeof(DateTimeOffset):
                 return a => EF.Property<DateTimeOffset>(a!, propertyName) < Convert.ToDateTime(values[0]) || EF.Property<DateTimeOffset>(a!, propertyName) > Convert.ToDateTime(values[1]);
             default:
