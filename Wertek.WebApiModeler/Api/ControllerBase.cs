@@ -62,6 +62,30 @@ public class ControllerBase<TObject, TList, TEntity> : ControllerBase
         return Ok(result);
     }
 
+    private bool HasDependents(TEntity entity) {
+        var entityType = typeof(TEntity);
+        var properties = entityType.GetProperties();
+        foreach (var property in properties)
+        {
+            var propertyType = property.PropertyType;
+            if (propertyType.IsGenericType && propertyType.GetGenericTypeDefinition() == typeof(ICollection<>))
+            {
+                var collection = property.GetValue(entity);
+                if (collection != null)
+                {
+                    var collectionType = collection.GetType();
+                    var countProperty = collectionType.GetProperty("Count");
+                    var count = (int)countProperty!.GetValue(collection)!;
+                    if (count > 0)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     [HttpPost("values-for/{field}")]
     public virtual async Task<ActionResult<IEnumerable<object>>> ValuesFor(
         [FromRoute] string field,
@@ -141,6 +165,17 @@ public class ControllerBase<TObject, TList, TEntity> : ControllerBase
         }
         var model = _mapper.Map<TObject>(entity);
         return Ok(model);
+    }
+
+    [HttpGet("{id}/has-dependents")]
+    public virtual async Task<ActionResult<bool>> GetHasDependents([FromRoute] long id)
+    {
+        var entity = await _dbContext.Set<TEntity>().FindAsync(id);
+        if (entity == null)
+        {
+            return NotFound();
+        }
+        return Ok(HasDependents(entity));
     }
 
     [HttpPost]
