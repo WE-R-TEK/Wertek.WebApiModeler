@@ -5,7 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PackageId>Wertek.WebApiModeler</PackageId>
-    <Version>1.0.7</Version>
+    <Version>1.0.8</Version>
     <Authors>WE'R TEK</Authors>
     <Company>WE'R TEK</Company>
     <Description>A Easy way to modeler a web api using .NET 7 and EF 7</Description>
