@@ -120,18 +120,19 @@ public class ControllerBase<TObject, TList, TEntity> : ControllerBase
                 }
             }
         };
+        
         IQueryable<TList> query = _dbContext.Set<TEntity>()
             .ProjectTo<TList>(_mapper.ConfigurationProvider);
 
         query = query.ToFilterView(filter);
         var entities = await query
-            .Select(x => new {
-                Key = x.GetType().GetProperty(string.IsNullOrEmpty(filters.KeyField) ? field : filters.KeyField)!.GetValue(x),
-                Value = x.GetType().GetProperty(field)!.GetValue(x)
-            })
+            
             .ToListAsync();
             
-        return Ok(entities.Distinct());
+        return Ok(entities.Select(x => new {
+                Key = x.GetType().GetProperty(string.IsNullOrEmpty(filters.KeyField) ? field : filters.KeyField)!.GetValue(x),
+                Value = x.GetType().GetProperty(field)!.GetValue(x)
+            }).Distinct());
     }
 
     [HttpPost("export")]
