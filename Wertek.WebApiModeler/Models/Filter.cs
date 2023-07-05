@@ -23,12 +23,14 @@ public class Clause
         Field = "";
         Operator = Operators.Equal;
         Value = "";
+        Capitalize = true;
     }
     public string Field { get; set; }
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public Operators Operator { get; set; }
     public string Value { get; set; }
     public IEnumerable<Filter> Filters { get; set; }
+    public bool? Capitalize { get; set; }
 }
 
 public enum Operators

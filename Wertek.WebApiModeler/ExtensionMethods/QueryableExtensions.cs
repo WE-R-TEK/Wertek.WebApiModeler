@@ -129,6 +129,8 @@ public static class QueryableExtensions
         {
             foreach (var orderByProperty in sort)
             {
+                if(orderByProperty.Capitalize == true)
+                    orderByProperty.Field = orderByProperty.Field.Capitalize();
                 if (orderByProperty.Dir == SortDirection.Desc)
                 {
                     if (orderedQuery != null)
