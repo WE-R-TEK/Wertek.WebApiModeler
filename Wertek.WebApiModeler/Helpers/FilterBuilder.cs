@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using Wertek.WebApiModeler.ExtensionMethods;
 using Wertek.WebApiModeler.Models;
 
 namespace Wertek.WebApiModeler.Helpers;
@@ -8,49 +9,47 @@ public static class FilterBuilder
 {
     public static Expression<Func<T, bool>>? ConfigureFilterQuery<T>(Clause clause)
     {
-        //         Expression<Func<TEntity, bool>> leftexp = a => EF.Property<object>(a!, "aaa") == Convert.ChangeType("bbb", typeof(decimal));
-        //         Expression<Func<TEntity, bool>> leftexp2 = a => EF.Property<object>(a!, "aaa") == Convert.ChangeType("bbb", typeof(decimal));
-        //         Expression binaryexp = Expression.And(leftexp.Body, leftexp2.Body);
-        //         ParameterExpression[] parameters = new ParameterExpression[1] {
-        //     Expression.Parameter(typeof(TEntity), leftexp.Parameters.First().Name)
-        // };
-        //Expression<Func<TEntity, bool>> lambdaExp = Expression.Lambda<Func<TEntity, bool>>(binaryexp, parameters);
-        //        query.Where(lambdaExp);
+        if (clause == null)
+            return null;
 
-        Type propertyType = typeof(T).GetProperty(clause.Field)?.PropertyType ?? new object().GetType();
+        string field = clause.Field;
+        if (clause.Capitalize == true)
+            field = clause.Field.Capitalize();
+
+        Type propertyType = typeof(T).GetProperty(field)?.PropertyType ?? new object().GetType();
 
         switch (clause.Operator)
         {
             case Operators.Equal:
-                return GetEqualQuery<T>(clause.Field, clause.Value, propertyType);
+                return GetEqualQuery<T>(field, clause.Value, propertyType);
             case Operators.NotEqual:
-                return GetNotEqualQuery<T>(clause.Field, clause.Value, propertyType);
+                return GetNotEqualQuery<T>(field, clause.Value, propertyType);
             case Operators.GreaterThan:
-                return GetGreaterThanQuery<T>(clause.Field, clause.Value, propertyType);
+                return GetGreaterThanQuery<T>(field, clause.Value, propertyType);
             case Operators.GreaterThanOrEqual:
-                return GetGreaterThanOrEqualQuery<T>(clause.Field, clause.Value, propertyType);
+                return GetGreaterThanOrEqualQuery<T>(field, clause.Value, propertyType);
             case Operators.LessThan:
-                return GetLessThanQuery<T>(clause.Field, clause.Value, propertyType);
+                return GetLessThanQuery<T>(field, clause.Value, propertyType);
             case Operators.LessThanOrEqual:
-                return GetLessThanOrEqualQuery<T>(clause.Field, clause.Value, propertyType);
+                return GetLessThanOrEqualQuery<T>(field, clause.Value, propertyType);
             case Operators.Contains:
-                return GetContainsQuery<T>(clause.Field, clause.Value, propertyType);
+                return GetContainsQuery<T>(field, clause.Value, propertyType);
             case Operators.StartsWith:
-                return GetStartsWithQuery<T>(clause.Field, clause.Value, propertyType);
+                return GetStartsWithQuery<T>(field, clause.Value, propertyType);
             case Operators.EndsWith:
-                return GetEndsWithQuery<T>(clause.Field, clause.Value, propertyType);
+                return GetEndsWithQuery<T>(field, clause.Value, propertyType);
             case Operators.In:
-                return GetInQuery<T>(clause.Field, clause.Value, propertyType);
+                return GetInQuery<T>(field, clause.Value, propertyType);
             case Operators.NotIn:
-                return GetNotInQuery<T>(clause.Field, clause.Value, propertyType);
+                return GetNotInQuery<T>(field, clause.Value, propertyType);
             case Operators.Between:
-                return GetBetweenQuery<T>(clause.Field, clause.Value, propertyType);
+                return GetBetweenQuery<T>(field, clause.Value, propertyType);
             case Operators.NotBetween:
-                return GetNotBetweenQuery<T>(clause.Field, clause.Value, propertyType);
+                return GetNotBetweenQuery<T>(field, clause.Value, propertyType);
             case Operators.IsNull:
-                return a => EF.Property<object>(a!, clause.Field) == null;
+                return a => EF.Property<object>(a!, field) == null;
             case Operators.IsNotNull:
-                return a => EF.Property<object>(a!, clause.Field) != null;
+                return a => EF.Property<object>(a!, field) != null;
             default:
                 return null;
         }

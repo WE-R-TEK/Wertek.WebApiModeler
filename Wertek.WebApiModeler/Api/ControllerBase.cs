@@ -8,9 +8,8 @@ using Wertek.WebApiModeler.Models;
 
 namespace Wertek.WebApiModeler.Api;
 
-public class ControllerBase<TObject, TList, TEntity> : ControllerBase 
+public class ControllerBase<TObject, TEntity> : ControllerBase 
     where TObject : class
-    where TList : class
     where TEntity : class
 {
     protected readonly DbContext _dbContext;
@@ -26,10 +25,10 @@ public class ControllerBase<TObject, TList, TEntity> : ControllerBase
     }
 
     [HttpGet]
-    public virtual async Task<ActionResult<IEnumerable<TList>>> GetAll()
+    public virtual async Task<ActionResult<IEnumerable<TObject>>> GetAll()
     {
-        IQueryable<TList> query = _dbContext.Set<TEntity>()
-        .ProjectTo<TList>(_mapper.ConfigurationProvider);
+        IQueryable<TObject> query = _dbContext.Set<TEntity>()
+        .ProjectTo<TObject>(_mapper.ConfigurationProvider);
 
         var entities = await query.ToListAsync();
         
@@ -37,29 +36,34 @@ public class ControllerBase<TObject, TList, TEntity> : ControllerBase
     }
 
     [HttpPost("paginated")]
-    public virtual async Task<ActionResult<PaginatedResult<TList>>> GetAllPaginated(FilterDTO? filter)
+    public virtual async Task<ActionResult<PaginatedResult<TObject>>> GetAllPaginated(FilterDTO? filter)
     {
-        IQueryable<TList> query = _dbContext.Set<TEntity>()
-            .ProjectTo<TList>(_mapper.ConfigurationProvider);
+        return Ok(await this.GetAllPaginatedBase<TObject, TEntity>(filter));
+    }
+
+    public async Task<PaginatedResult<Tobj>> GetAllPaginatedBase<Tobj, Tent>(FilterDTO? filter)  where Tobj : class where Tent : class {
+        IQueryable<Tobj> query = _dbContext.Set<Tent>()
+            .ProjectTo<Tobj>(_mapper.ConfigurationProvider);
 
         query = query.ToFilterView(filter);
         var entities = await query.ToListAsync();
-        var count = await _dbContext.Set<TEntity>().CountAsync();
+        var count = await _dbContext.Set<Tent>().CountAsync();
 
-        var totalFiltered = await _dbContext.Set<TEntity>()
-            .ProjectTo<TList>(_mapper.ConfigurationProvider)
+        var totalFiltered = await _dbContext.Set<Tent>()
+            .ProjectTo<Tobj>(_mapper.ConfigurationProvider)
             .ToFilterView(new FilterDTO{Filters = filter != null ? filter.Filters: new List<Filter>()})
             .CountAsync();
-        var result = new PaginatedResult<TList>
+        var result = new PaginatedResult<Tobj>
         {
-            Page = filter != null ? filter.Page : 0,
+            Page = filter != null ? filter.Page : 1,
             PageSize = filter != null ? filter.PageSize : 0,
             TotalCount = count,
             TotalFiltered = totalFiltered,
-            TotalPages = filter != null && filter.PageSize > 0 ? totalFiltered / filter.PageSize : 1,
+            TotalPages = filter != null && filter.PageSize > 0 ? (int)Math.Ceiling((double)totalFiltered / filter.PageSize) : 1,
             Items = entities
         };
-        return Ok(result);
+
+        return result;
     }
 
     private bool HasDependents(TEntity entity) {
@@ -90,6 +94,12 @@ public class ControllerBase<TObject, TList, TEntity> : ControllerBase
     public virtual async Task<ActionResult<IEnumerable<object>>> ValuesFor(
         [FromRoute] string field,
         [FromBody] FilterValueFor filters)
+    {       
+        return Ok(await ValuesForBase<TObject, TEntity>(field, filters));
+    }
+    public async Task<IEnumerable<object>> ValuesForBase<Tobj,Tent>(
+        string field,
+        FilterValueFor filters) where Tobj : class where Tent : class
     {
         var filterList = filters.Filters.ToList();
         filterList.Add(new Filter
@@ -121,18 +131,18 @@ public class ControllerBase<TObject, TList, TEntity> : ControllerBase
             }
         };
         
-        IQueryable<TList> query = _dbContext.Set<TEntity>()
-            .ProjectTo<TList>(_mapper.ConfigurationProvider);
+        IQueryable<Tobj> query = _dbContext.Set<Tent>()
+            .ProjectTo<Tobj>(_mapper.ConfigurationProvider);
 
         query = query.ToFilterView(filter);
         var entities = await query
             
             .ToListAsync();
             
-        return Ok(entities.Select(x => new {
-                Key = x.GetType().GetProperty(string.IsNullOrEmpty(filters.KeyField) ? field : filters.KeyField)!.GetValue(x),
-                Value = x.GetType().GetProperty(field)!.GetValue(x)
-            }).Distinct());
+        return entities.Select(x => new {
+                Key = x.GetType().GetProperty(string.IsNullOrEmpty(filters.KeyField.Capitalize()) ? field : filters.KeyField.Capitalize())!.GetValue(x),
+                Value = x.GetType().GetProperty(field.Capitalize())!.GetValue(x)
+            }).Distinct();
     }
 
     [HttpPost("export")]
@@ -143,7 +153,7 @@ public class ControllerBase<TObject, TList, TEntity> : ControllerBase
         query = query.ToFilterView(filter);
         var entities = await query.ToListAsync();
 
-        var models = _mapper.Map<IEnumerable<TList>>(entities);
+        var models = _mapper.Map<IEnumerable<TObject>>(entities);
 
         using (var package = new ExcelPackage())
         {
