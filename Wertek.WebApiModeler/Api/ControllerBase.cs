@@ -148,12 +148,17 @@ public class ControllerBase<TObject, TEntity> : ControllerBase
     [HttpPost("export")]
     public virtual async Task<IActionResult> GetExcelFile(FilterDTO? filter)
     {
-        IQueryable<TEntity> query = _dbContext.Set<TEntity>();
+        return await GetExcelFileBase<TObject, TEntity>(filter);
+    }
+
+    public async Task<FileContentResult> GetExcelFileBase<Tobj,Tent>(FilterDTO? filter) where Tobj : class where Tent : class
+    {
+        IQueryable<Tent> query = _dbContext.Set<Tent>();
 
         query = query.ToFilterView(filter);
         var entities = await query.ToListAsync();
 
-        var models = _mapper.Map<IEnumerable<TObject>>(entities);
+        var models = _mapper.Map<IEnumerable<Tobj>>(entities);
 
         using (var package = new ExcelPackage())
         {
