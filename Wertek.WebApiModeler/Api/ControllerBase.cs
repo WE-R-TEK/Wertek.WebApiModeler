@@ -38,22 +38,22 @@ public class ControllerBase<TObject, TEntity> : ControllerBase
     [HttpPost("paginated")]
     public virtual async Task<ActionResult<PaginatedResult<TObject>>> GetAllPaginated(FilterDTO? filter)
     {
-        return Ok(await this.GetAllPaginatedBase<TObject, TEntity>(filter));
+        return Ok(await this.GetAllPaginatedBase<TEntity>(filter));
     }
 
-    public async Task<PaginatedResult<Tobj>> GetAllPaginatedBase<Tobj, Tent>(FilterDTO? filter)  where Tobj : class where Tent : class {
-        IQueryable<Tobj> query = _dbContext.Set<Tent>()
-            .ProjectTo<Tobj>(_mapper.ConfigurationProvider);
+    public async Task<PaginatedResult<TObject>> GetAllPaginatedBase<Tent>(FilterDTO? filter)  where Tent : class {
+        IQueryable<TObject> query = _dbContext.Set<Tent>()
+            .ProjectTo<TObject>(_mapper.ConfigurationProvider);
 
         query = query.ToFilterView(filter);
         var entities = await query.ToListAsync();
         var count = await _dbContext.Set<Tent>().CountAsync();
 
         var totalFiltered = await _dbContext.Set<Tent>()
-            .ProjectTo<Tobj>(_mapper.ConfigurationProvider)
+            .ProjectTo<TObject>(_mapper.ConfigurationProvider)
             .ToFilterView(new FilterDTO{Filters = filter != null ? filter.Filters: new List<Filter>()})
             .CountAsync();
-        var result = new PaginatedResult<Tobj>
+        var result = new PaginatedResult<TObject>
         {
             Page = filter != null ? filter.Page : 1,
             PageSize = filter != null ? filter.PageSize : 0,
@@ -95,11 +95,11 @@ public class ControllerBase<TObject, TEntity> : ControllerBase
         [FromRoute] string field,
         [FromBody] FilterValueFor filters)
     {       
-        return Ok(await ValuesForBase<TObject, TEntity>(field, filters));
+        return Ok(await ValuesForBase<TEntity>(field, filters));
     }
-    public async Task<IEnumerable<object>> ValuesForBase<Tobj,Tent>(
+    public async Task<IEnumerable<object>> ValuesForBase<Tent>(
         string field,
-        FilterValueFor filters) where Tobj : class where Tent : class
+        FilterValueFor filters) where Tent : class
     {
         var filterList = filters.Filters.ToList();
         filterList.Add(new Filter
@@ -131,8 +131,8 @@ public class ControllerBase<TObject, TEntity> : ControllerBase
             }
         };
         
-        IQueryable<Tobj> query = _dbContext.Set<Tent>()
-            .ProjectTo<Tobj>(_mapper.ConfigurationProvider);
+        IQueryable<TObject> query = _dbContext.Set<Tent>()
+            .ProjectTo<TObject>(_mapper.ConfigurationProvider);
 
         query = query.ToFilterView(filter);
         var entities = await query
@@ -148,17 +148,17 @@ public class ControllerBase<TObject, TEntity> : ControllerBase
     [HttpPost("export")]
     public virtual async Task<IActionResult> GetExcelFile(FilterDTO? filter)
     {
-        return await GetExcelFileBase<TObject, TEntity>(filter);
+        return await GetExcelFileBase<TEntity>(filter);
     }
 
-    public async Task<FileContentResult> GetExcelFileBase<Tobj,Tent>(FilterDTO? filter) where Tobj : class where Tent : class
+    public async Task<FileContentResult> GetExcelFileBase<Tent>(FilterDTO? filter) where Tent : class
     {
         IQueryable<Tent> query = _dbContext.Set<Tent>();
 
         query = query.ToFilterView(filter);
         var entities = await query.ToListAsync();
 
-        var models = _mapper.Map<IEnumerable<Tobj>>(entities);
+        var models = _mapper.Map<IEnumerable<TObject>>(entities);
 
         using (var package = new ExcelPackage())
         {
